@@ -9,7 +9,7 @@ spec:
   target: ame-eks-anypointcontroller
   businessGroup: Salesforce/MuleTraining
   environment: Training
-  runtimeVersion: "4.10.3:2e-java17"
+  runtimeVersion: "4.9.24:10-java17"
   application:
     group: Salesforce
     artifactId: ame-hellomule-slb
