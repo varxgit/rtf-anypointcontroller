@@ -15,7 +15,7 @@ spec:
     artifactId: ame-hellomule-slb
     version: "1.0.0"
     packaging: jar
-  replicas: 1
+  replicas: 2
   resources:
     requests:
       cpu: "500m"
