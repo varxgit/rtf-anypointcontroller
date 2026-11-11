@@ -1,0 +1,54 @@
+---
+apiVersion: rtf.mulesoft.com/v1
+kind: MuleApplication
+metadata:
+  annotations: {}
+  name: ame-hellomule3
+  namespace: rtf-applications
+spec:
+  target: ame-eks-anypointcontroller
+  businessGroup: Salesforce/MuleTraining
+  environment: Training
+  runtimeVersion: "4.10.3:2e-java17"
+  application:
+    group: Salesforce
+    artifactId: ame-hellomule-slb
+    version: "1.0.0"
+    packaging: jar
+  replicas: 1
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ame-hellomule3
+  namespace: rtf-applications
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: rtf-istio-gateway
+      namespace: istio-system
+  hostnames:
+    - apc.mzbrotha.org
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /ame-hellomule3
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - kind: Service
+          name: ame-hellomule3
+          port: 8081
